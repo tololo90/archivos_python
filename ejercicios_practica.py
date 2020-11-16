@@ -35,6 +35,13 @@ def ej1():
     y cumpla el objetivo especificado, retornando la cantidad
     de líneas encontradas.
     '''
+    fi = open('notas.txt', 'r')
+    with open('notas.txt') as fi:
+        for line in fi:
+            cantidad_lineas += 1
+    print(f"el archivo tiene {cantidad_lineas} lineas")
+
+    fi.close()
 
 
 def ej2():
@@ -59,6 +66,15 @@ def ej2():
     # fo = open(.......)
 
     # Recuerde cerrar los archivos al final ;)
+    fi = open('notas.txt', 'r')
+    fo = open('nuevo.txt', 'w')
+    with open('notas.txt') as fi:
+        for line in fi:
+            fo.write(line)
+            cantidad_lineas += 1
+    print(f"se copiaron {cantidad_lineas} lineas al archivo nuevo")
+    fi.close()
+    fo.close()
 
 
 def ej3():
@@ -71,6 +87,23 @@ def ej3():
     de departamentos de 3 ambientes disponibles.
     Al finalizar el proceso, imprima en pantalla los resultados.
     '''
+
+    ambientes_2 = 0
+    ambientes_3 = 0
+
+    with open('propiedades.csv') as csvfile:
+        data = list(csv.DictReader(csvfile))
+    total_Departamento = len(data)
+    for i in range(total_Departamento):
+        row = data[i]
+        ambientes = str(row.get('ambientes'))
+        if ambientes == '2':
+            ambientes_2 += 1
+        if ambientes == '3':
+            ambientes_3 += 1
+
+    print(f"hay {ambientes_2} departamentos de 2 ambientes")
+    print(f"hay {ambientes_3} departamentos de 3 ambientes")
 
 
 def ej4():
@@ -94,6 +127,15 @@ def ej4():
     # En el bucle realizar:
     # Generar y completar el diccionario con las frutas y cantidades
     # ingresadas por consola hasta ingresar la palabra "FIN"
+    print("inventario frutas y verduras\n"
+          "para finalizar escriba FIN en el nombre del producto")
+    while True:
+        fruta_verdura = str(input("escriba el nombre de su producto\n"))
+        if fruta_verdura == "FIN":
+            break
+        total = int(input("escriba el total\n"))
+        inventario[fruta_verdura] = total
+    print(inventario)
 
 
 def ej5():
@@ -112,7 +154,7 @@ def ej5():
 
     writer.writerow({'Fruta Verdura': ....., 'Cantidad': ....})
 
-    Ojo! No es igual al diccionario del anterior ejercicio, 
+    Ojo! No es igual al diccionario del anterior ejercicio,
     porque el anterior usaba como "clave" el nombre de la fruta.
     Ahora tenemos dos pares de valores "clave: valor", pueden
     ver el inventario con el ejemplo de la manzana.
@@ -134,12 +176,25 @@ def ej5():
     # Bucle....
 
     # writer.writerow({'Fruta Verdura': ....., 'Cantidad': ....})
+    print("inventario de frutas y verduras, archivo csv\n"
+          "para finalizar escriba FIN en el nombre del producto")
+    inventario = open('inventario.csv', "w", newline='')
+    header = ["fruta/verdura", "cantidad"]
+    writer = csv.DictWriter(inventario, fieldnames=header)
+    writer.writeheader()
+    while True:
+        fruta_verdura = str(input("ingrese fruta o verdura\n"))
+        if fruta_verdura == "FIN":
+            break
+        cantidad = int(input("ingrese la cantidad\n"))
+        writer.writerow({"fruta/verdura": fruta_verdura, "cantidad": cantidad})
+    inventario.close()
 
 
 if __name__ == '__main__':
     print("Bienvenidos a otra clase de Inove con Python")
     ej1()
-    #ej2()
-    #ej3()
-    #ej4()
-    #ej5()
+    ej2()
+    ej3()
+    ej4()
+    ej5()
